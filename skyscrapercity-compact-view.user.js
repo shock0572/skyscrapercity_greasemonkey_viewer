@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.6.1
+// @version      1.6.2
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -264,46 +264,7 @@ body {
   font-size: 11px !important;
 }
 
-/* ===== IMAGES: scaled previews with click-to-enlarge ===== */
-.message--post .bbWrapper img,
-.message--post .message-body img,
-.message--post .bbImage,
-.message--post .js-lbImage img,
-.message--post .attachment-thumb {
-  max-height: 250px !important;
-  max-width: 100% !important;
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain !important;
-  cursor: zoom-in !important;
-  transition: none !important;
-  border-radius: 4px !important;
-}
-.message--post .bbImageWrapper {
-  max-height: 250px !important;
-  overflow: hidden !important;
-  display: inline-block !important;
-}
-.message--post .js-lbImage {
-  max-height: 250px !important;
-  display: inline-block !important;
-  overflow: hidden !important;
-}
-
-.message--post .bbWrapper img.ssc-expanded,
-.message--post .message-body img.ssc-expanded,
-.message--post .bbImage.ssc-expanded,
-.message--post .js-lbImage img.ssc-expanded,
-.message--post .attachment-thumb.ssc-expanded {
-  max-height: none !important;
-  max-width: 100% !important;
-  cursor: zoom-out !important;
-}
-.message--post .bbImageWrapper:has(.ssc-expanded),
-.message--post .js-lbImage:has(.ssc-expanded) {
-  max-height: none !important;
-  overflow: visible !important;
-}
+/* ===== IMAGES: handled via JS for reliable override ===== */
 
 /* ===== THREAD PAGE LAYOUT ===== */
 
@@ -465,14 +426,53 @@ body {
     indicator.addEventListener('mouseleave', () => { indicator.style.opacity = '0.6'; });
     document.body.appendChild(indicator);
 
+    function constrainImg(img) {
+      if (img.dataset.sscExpanded === '1') return;
+      img.dataset.sscHandled = '1';
+      img.style.cssText = 'max-height: 250px !important; width: auto !important; height: auto !important; max-width: 100% !important; object-fit: contain !important; cursor: zoom-in !important; border-radius: 4px !important;';
+
+      const wrapper = img.closest('.bbImageWrapper, .js-lbImage, [data-lb-sidebar-href]');
+      if (wrapper) {
+        wrapper.style.cssText = 'max-height: 250px !important; overflow: hidden !important; display: inline-block !important;';
+        wrapper.dataset.sscWrapper = '1';
+      }
+    }
+
+    function processAllImages() {
+      document.querySelectorAll('.message--post img').forEach(constrainImg);
+    }
+
+    processAllImages();
+
+    const observer = new MutationObserver(processAllImages);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class', 'src'] });
+
     document.addEventListener('click', (e) => {
       const post = e.target.closest('.message--post');
       if (!post) return;
       const img = e.target.closest('img');
-      if (!img) return;
+      if (!img || !img.dataset.sscHandled) return;
       e.preventDefault();
       e.stopPropagation();
-      img.classList.toggle('ssc-expanded');
+      const expanded = img.dataset.sscExpanded === '1';
+      const wrapper = img.closest('[data-ssc-wrapper]');
+      if (expanded) {
+        img.style.setProperty('max-height', '250px', 'important');
+        img.style.setProperty('cursor', 'zoom-in', 'important');
+        if (wrapper) {
+          wrapper.style.setProperty('max-height', '250px', 'important');
+          wrapper.style.setProperty('overflow', 'hidden', 'important');
+        }
+        img.dataset.sscExpanded = '0';
+      } else {
+        img.style.setProperty('max-height', 'none', 'important');
+        img.style.setProperty('cursor', 'zoom-out', 'important');
+        if (wrapper) {
+          wrapper.style.setProperty('max-height', 'none', 'important');
+          wrapper.style.setProperty('overflow', 'visible', 'important');
+        }
+        img.dataset.sscExpanded = '1';
+      }
     }, true);
   });
 })();
