@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.0
+// @version      1.7.1
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -271,26 +271,13 @@ body {
 /* ===== THREAD PAGE LAYOUT ===== */
 
 /* Remove right sidebar to reclaim width */
-.p-body-sidebar,
-.p-body-sideNav,
-.sidebar-block,
-.california-ad,
-.california,
-.sidebar-ad,
-#TopRailCali,
-#TopRailCalifornia,
-[class*="sidebar-ad"],
-[class*="california"],
-[data-sidebar-section],
-[id*="TopRail"] {
+.p-body-sidebar {
   display: none !important;
   width: 0 !important;
-  height: 0 !important;
   overflow: hidden !important;
-  visibility: hidden !important;
 }
-.p-body-main.withSidebar {
-  display: block !important;
+.p-body-sideNav {
+  display: none !important;
 }
 .p-body-content {
   flex: 1 !important;
@@ -409,20 +396,10 @@ body {
   padding: 4px 0 !important;
 }
 
-/* ads, promo blocks, sidebar widgets, forum info cards */
+/* ads and promo blocks */
 .p-body-sidebar--ad,
-[data-widget-section],
-[data-widget-key],
-[data-widget-id],
-.widget,
-.block--widget,
-.p-footer-inner,
-.block-container[data-xf-init="attribution"],
-.js-notices,
-.p-body-sidebar,
-.p-body-sideNav,
-aside.block,
-.block--category .block-footer,
+.p-body-sidebar .block--widget,
+.p-body-sidebar .widget,
 .uix_extendedFooter,
 .uix_sidebarWidget {
   display: none !important;
@@ -439,8 +416,7 @@ aside.block,
 
   document.addEventListener('DOMContentLoaded', () => {
     function nukeSidebar() {
-      const selectors = '.p-body-sidebar, .sidebar-block, .california-ad, .california, .sidebar-ad, [class*="california"], [data-sidebar-section], [id*="TopRail"]';
-      document.querySelectorAll(selectors).forEach(el => el.remove());
+      document.querySelectorAll('.p-body-sidebar').forEach(el => el.remove());
     }
     nukeSidebar();
     new MutationObserver(nukeSidebar).observe(document.body, { childList: true, subtree: true });
