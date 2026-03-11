@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.6.5
+// @version      1.6.6
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -295,13 +295,32 @@ body {
 /* ===== THREAD PAGE LAYOUT ===== */
 
 /* Remove right sidebar to reclaim width */
-.p-body-sidebar {
+.p-body-sidebar,
+.p-body-sideNav,
+.sidebar-block,
+.california-ad,
+.california,
+.sidebar-ad,
+#TopRailCali,
+#TopRailCalifornia,
+[class*="sidebar-ad"],
+[class*="california"],
+[data-sidebar-section],
+[id*="TopRail"] {
   display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+}
+.p-body-main.withSidebar {
+  display: block !important;
 }
 .p-body-content {
   flex: 1 !important;
   max-width: 80% !important;
   margin: 0 auto !important;
+  width: 80% !important;
 }
 .p-body-main {
   max-width: 80% !important;
@@ -443,6 +462,13 @@ aside.block,
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    function nukeSidebar() {
+      const selectors = '.p-body-sidebar, .sidebar-block, .california-ad, .california, .sidebar-ad, [class*="california"], [data-sidebar-section], [id*="TopRail"]';
+      document.querySelectorAll(selectors).forEach(el => el.remove());
+    }
+    nukeSidebar();
+    new MutationObserver(nukeSidebar).observe(document.body, { childList: true, subtree: true });
+
     const indicator = document.createElement('div');
     indicator.textContent = 'Compact';
     Object.assign(indicator.style, {
