@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/skyscrapercity-compact
-// @version      1.3.0
+// @version      1.5.0
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -36,7 +36,7 @@
 
   const css = `
 /* ===== LEGIBLE FONTS ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..600&display=swap');
 
 body,
 .message-body,
@@ -48,11 +48,34 @@ body,
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   text-rendering: optimizeLegibility !important;
+  font-optical-sizing: auto !important;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1 !important;
+  letter-spacing: 0.01em !important;
+  word-spacing: 0.02em !important;
+}
+
+/* Counteract halation: bright-on-dark text looks heavier than it is */
+@media (prefers-color-scheme: dark) {
+  body { -webkit-font-smoothing: antialiased !important; }
+}
+body {
+  -webkit-text-stroke: 0.2px rgba(0,0,0,0.1) !important;
+  font-synthesis: none !important;
+}
+
+/* Softer contrast — pure white on dark causes eye strain */
+.message--post .message-content,
+.message--post .bbWrapper {
+  color: #dcdcdc !important;
+}
+.message--post .bbCodeBlock-content {
+  color: #c8c8c8 !important;
 }
 
 .message--post .message-name {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
 }
 
 /* ===== POST LAYOUT: convert sidebar user-cell to inline header ===== */
@@ -172,15 +195,16 @@ body,
   margin: 0 !important;
 }
 .message--post .message-content {
-  font-size: 13.5px !important;
-  line-height: 1.45 !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  max-width: 75ch !important;
 }
 .message--post .bbWrapper {
-  font-size: 13.5px !important;
-  line-height: 1.45 !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
 }
 .message--post .bbWrapper p {
-  margin: 0 0 4px !important;
+  margin: 0 0 10px !important;
 }
 
 /* ===== QUOTES: tighter ===== */
@@ -196,9 +220,9 @@ body,
   opacity: 0.6 !important;
 }
 .message--post .bbCodeBlock-content {
-  padding: 4px 8px !important;
-  font-size: 12.5px !important;
-  line-height: 1.4 !important;
+  padding: 6px 10px !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
 }
 .message--post .bbCodeBlock-expandLink {
   padding: 2px 8px !important;
