@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.6.3
+// @version      1.6.4
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
-// @updateURL    https://raw.githubusercontent.com/shock0572/skyscrapercity_greasemonkey_viewer/main/skyscrapercity-compact-view.user.js
-// @downloadURL  https://raw.githubusercontent.com/shock0572/skyscrapercity_greasemonkey_viewer/main/skyscrapercity-compact-view.user.js
+// @updateURL    https://cdn.jsdelivr.net/gh/shock0572/skyscrapercity_greasemonkey_viewer@main/skyscrapercity-compact-view.user.js
+// @downloadURL  https://cdn.jsdelivr.net/gh/shock0572/skyscrapercity_greasemonkey_viewer@main/skyscrapercity-compact-view.user.js
 // @grant        GM_addStyle
 // @grant        GM_registerMenuCommand
 // @run-at       document-start
