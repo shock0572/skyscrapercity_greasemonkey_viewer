@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.1
+// @version      1.7.2
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -175,7 +175,7 @@ body {
 .message--post .message-content {
   font-size: 15px !important;
   line-height: 1.7 !important;
-  max-width: 75ch !important;
+  max-width: 100% !important;
 }
 .message--post .bbWrapper {
   font-size: 15px !important;
