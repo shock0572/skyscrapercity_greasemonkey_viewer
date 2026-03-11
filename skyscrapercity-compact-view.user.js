@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/skyscrapercity-compact
-// @version      1.1.0
+// @version      1.3.0
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -35,6 +35,26 @@
   if (!isEnabled()) return;
 
   const css = `
+/* ===== LEGIBLE FONTS ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+body,
+.message-body,
+.message-content,
+.bbWrapper,
+.bbCodeBlock-content,
+.p-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+.message--post .message-name {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-weight: 600 !important;
+}
+
 /* ===== POST LAYOUT: convert sidebar user-cell to inline header ===== */
 
 .message--post .message-inner {
@@ -241,11 +261,11 @@
 }
 .p-body-content {
   flex: 1 !important;
-  max-width: 900px !important;
+  max-width: 70% !important;
   margin: 0 auto !important;
 }
 .p-body-main {
-  max-width: 900px !important;
+  max-width: 70% !important;
   margin: 0 auto !important;
 }
 .p-body-inner {
