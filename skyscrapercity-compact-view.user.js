@@ -285,11 +285,11 @@ body {
 }
 .p-body-content {
   flex: 1 !important;
-  max-width: 92% !important;
+  max-width: 80% !important;
   margin: 0 auto !important;
 }
 .p-body-main {
-  max-width: 92% !important;
+  max-width: 80% !important;
   margin: 0 auto !important;
 }
 .p-body-inner {
