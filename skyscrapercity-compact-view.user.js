@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.8
+// @version      1.7.9
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -64,7 +64,7 @@ body {
   box-sizing: border-box !important;
   margin: 0 !important;
   border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-  padding: 6px 10px 4px !important;
+  padding: 6px 10px 4px 16px !important;
 }
 .message--post .message-inner {
   display: flex !important;
