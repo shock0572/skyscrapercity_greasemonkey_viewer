@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.3
+// @version      1.7.4
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -173,13 +173,13 @@ body {
   margin: 0 !important;
 }
 .message--post .message-content {
-  font-size: 15px !important;
-  line-height: 1.7 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
   max-width: 100% !important;
 }
 .message--post .bbWrapper {
-  font-size: 15px !important;
-  line-height: 1.7 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
 }
 .message--post .bbWrapper p {
   margin: 0 0 10px !important;
@@ -199,8 +199,8 @@ body {
 }
 .message--post .bbCodeBlock-content {
   padding: 6px 10px !important;
-  font-size: 14px !important;
-  line-height: 1.55 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
 }
 .message--post .bbCodeBlock-expandLink {
   padding: 2px 8px !important;
