@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.5
+// @version      1.7.6
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -429,6 +429,9 @@ body {
 
     function constrainImg(img) {
       if (img.classList.contains('ssc-constrained')) return;
+      if (img.closest('.bbMediaJustifier, .js-unfurl, .unfurl, .unfurl-image, [data-s9e-mediaembed], .bbOembed')) return;
+      if (!img.classList.contains('bbImage') && !img.closest('.bbImageWrapper, .js-lbImage, .attachment-thumb')) return;
+
       img.removeAttribute('style');
       img.classList.add('ssc-constrained');
 
@@ -446,7 +449,7 @@ body {
     }
 
     function processAllImages() {
-      document.querySelectorAll('.message--post img:not(.ssc-constrained)').forEach(constrainImg);
+      document.querySelectorAll('.message--post img.bbImage:not(.ssc-constrained), .message--post .bbImageWrapper img:not(.ssc-constrained), .message--post .js-lbImage img:not(.ssc-constrained)').forEach(constrainImg);
     }
 
     processAllImages();
