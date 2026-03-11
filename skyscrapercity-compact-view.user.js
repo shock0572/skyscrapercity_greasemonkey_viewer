@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.6.2
+// @version      1.6.3
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -264,7 +264,33 @@ body {
   font-size: 11px !important;
 }
 
-/* ===== IMAGES: handled via JS for reliable override ===== */
+/* ===== IMAGES: JS strips inline styles, CSS class does the rest ===== */
+.message--post img.ssc-constrained {
+  max-height: 250px !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  cursor: zoom-in !important;
+  border-radius: 4px !important;
+}
+.message--post img.ssc-constrained.ssc-expanded {
+  max-height: none !important;
+  cursor: zoom-out !important;
+}
+.message--post .bbImageWrapper.ssc-wrap,
+.message--post .js-lbImage.ssc-wrap,
+.message--post [data-lb-sidebar-href].ssc-wrap {
+  display: inline-block !important;
+  max-height: 250px !important;
+  overflow: hidden !important;
+}
+.message--post .bbImageWrapper.ssc-wrap.ssc-wrap-expanded,
+.message--post .js-lbImage.ssc-wrap.ssc-wrap-expanded,
+.message--post [data-lb-sidebar-href].ssc-wrap.ssc-wrap-expanded {
+  max-height: none !important;
+  overflow: visible !important;
+}
 
 /* ===== THREAD PAGE LAYOUT ===== */
 
@@ -427,52 +453,39 @@ body {
     document.body.appendChild(indicator);
 
     function constrainImg(img) {
-      if (img.dataset.sscExpanded === '1') return;
-      img.dataset.sscHandled = '1';
-      img.style.cssText = 'max-height: 250px !important; width: auto !important; height: auto !important; max-width: 100% !important; object-fit: contain !important; cursor: zoom-in !important; border-radius: 4px !important;';
+      if (img.classList.contains('ssc-constrained')) return;
+      img.removeAttribute('style');
+      img.classList.add('ssc-constrained');
 
       const wrapper = img.closest('.bbImageWrapper, .js-lbImage, [data-lb-sidebar-href]');
-      if (wrapper) {
-        wrapper.style.cssText = 'max-height: 250px !important; overflow: hidden !important; display: inline-block !important;';
-        wrapper.dataset.sscWrapper = '1';
+      if (wrapper && !wrapper.classList.contains('ssc-wrap')) {
+        wrapper.removeAttribute('style');
+        wrapper.classList.add('ssc-wrap');
       }
     }
 
     function processAllImages() {
-      document.querySelectorAll('.message--post img').forEach(constrainImg);
+      document.querySelectorAll('.message--post img:not(.ssc-constrained)').forEach(constrainImg);
     }
 
     processAllImages();
 
-    const observer = new MutationObserver(processAllImages);
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class', 'src'] });
+    new MutationObserver(() => {
+      processAllImages();
+    }).observe(document.body, { childList: true, subtree: true });
+
+    setInterval(processAllImages, 1000);
 
     document.addEventListener('click', (e) => {
       const post = e.target.closest('.message--post');
       if (!post) return;
-      const img = e.target.closest('img');
-      if (!img || !img.dataset.sscHandled) return;
+      const img = e.target.closest('img.ssc-constrained');
+      if (!img) return;
       e.preventDefault();
       e.stopPropagation();
-      const expanded = img.dataset.sscExpanded === '1';
-      const wrapper = img.closest('[data-ssc-wrapper]');
-      if (expanded) {
-        img.style.setProperty('max-height', '250px', 'important');
-        img.style.setProperty('cursor', 'zoom-in', 'important');
-        if (wrapper) {
-          wrapper.style.setProperty('max-height', '250px', 'important');
-          wrapper.style.setProperty('overflow', 'hidden', 'important');
-        }
-        img.dataset.sscExpanded = '0';
-      } else {
-        img.style.setProperty('max-height', 'none', 'important');
-        img.style.setProperty('cursor', 'zoom-out', 'important');
-        if (wrapper) {
-          wrapper.style.setProperty('max-height', 'none', 'important');
-          wrapper.style.setProperty('overflow', 'visible', 'important');
-        }
-        img.dataset.sscExpanded = '1';
-      }
+      img.classList.toggle('ssc-expanded');
+      const wrapper = img.closest('.ssc-wrap');
+      if (wrapper) wrapper.classList.toggle('ssc-wrap-expanded');
     }, true);
   });
 })();
