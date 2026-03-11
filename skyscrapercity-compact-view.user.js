@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.6.4
+// @version      1.6.5
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -414,9 +414,22 @@ body {
   padding: 4px 0 !important;
 }
 
-/* ads / promo blocks */
+/* ads, promo blocks, sidebar widgets, forum info cards */
 .p-body-sidebar--ad,
-[data-widget-section] {
+[data-widget-section],
+[data-widget-key],
+[data-widget-id],
+.widget,
+.block--widget,
+.p-footer-inner,
+.block-container[data-xf-init="attribution"],
+.js-notices,
+.p-body-sidebar,
+.p-body-sideNav,
+aside.block,
+.block--category .block-footer,
+.uix_extendedFooter,
+.uix_sidebarWidget {
   display: none !important;
 }
 `;
