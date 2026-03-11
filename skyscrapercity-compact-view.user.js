@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.7
+// @version      1.7.8
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -62,9 +62,9 @@ body {
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
-  margin-bottom: 4px !important;
+  margin: 0 !important;
   border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-  padding: 8px 10px 6px !important;
+  padding: 6px 10px 4px !important;
 }
 .message--post .message-inner {
   display: flex !important;
@@ -87,31 +87,9 @@ body {
   flex-basis: auto !important;
 }
 
-/* Small inline avatar */
+/* Hide avatars */
 .message--post .message-avatar {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-.message--post .message-avatar .avatar {
-  width: 28px !important;
-  height: 28px !important;
-}
-.message--post .message-avatar img,
-.message--post .message-avatar .avatar img {
-  width: 28px !important;
-  height: 28px !important;
-  border-radius: 4px !important;
-}
-.message--post .message-avatar .avatar--s,
-.message--post .message-avatar .avatar--m,
-.message--post .message-avatar .avatar--l {
-  width: 28px !important;
-  height: 28px !important;
-  font-size: 12px !important;
-  line-height: 28px !important;
+  display: none !important;
 }
 
 /* User details inline */
@@ -236,10 +214,6 @@ body {
 }
 
 /* ===== POST SPACING ===== */
-.message--post {
-  margin-bottom: 2px !important;
-  padding: 0 !important;
-}
 .message--post .message-inner {
   padding: 0 !important;
 }
