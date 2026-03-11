@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
-// @namespace    https://github.com/skyscrapercity-compact
-// @version      1.5.1
+// @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
+// @version      1.6.0
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
+// @updateURL    https://raw.githubusercontent.com/shock0572/skyscrapercity_greasemonkey_viewer/main/skyscrapercity-compact-view.user.js
+// @downloadURL  https://raw.githubusercontent.com/shock0572/skyscrapercity_greasemonkey_viewer/main/skyscrapercity-compact-view.user.js
 // @grant        GM_addStyle
 // @grant        GM_registerMenuCommand
 // @run-at       document-start
@@ -262,19 +264,24 @@ body {
   font-size: 11px !important;
 }
 
-/* ===== ATTACHMENTS: smaller thumbnails ===== */
+/* ===== IMAGES: scaled previews with click-to-enlarge ===== */
+.message--post .bbImage,
+.message--post .js-lbImage,
 .message--post .attachment-thumb {
-  max-width: 150px !important;
-  max-height: 150px !important;
-}
-.message--post .js-lbImage {
-  max-width: 400px !important;
-}
-
-/* ===== EMBEDDED IMAGES: reasonable sizing ===== */
-.message--post .bbImage {
-  max-height: 300px !important;
+  max-height: 250px !important;
+  max-width: 100% !important;
   width: auto !important;
+  object-fit: contain !important;
+  cursor: zoom-in !important;
+  transition: none !important;
+  border-radius: 4px !important;
+}
+.message--post .bbImage.ssc-expanded,
+.message--post .js-lbImage.ssc-expanded,
+.message--post .attachment-thumb.ssc-expanded {
+  max-height: none !important;
+  max-width: 100% !important;
+  cursor: zoom-out !important;
 }
 
 /* ===== THREAD PAGE LAYOUT ===== */
@@ -436,5 +443,13 @@ body {
     indicator.addEventListener('mouseenter', () => { indicator.style.opacity = '1'; });
     indicator.addEventListener('mouseleave', () => { indicator.style.opacity = '0.6'; });
     document.body.appendChild(indicator);
+
+    document.addEventListener('click', (e) => {
+      const img = e.target.closest('.bbImage, .js-lbImage, .attachment-thumb');
+      if (!img) return;
+      e.preventDefault();
+      e.stopPropagation();
+      img.classList.toggle('ssc-expanded');
+    }, true);
   });
 })();
