@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.4
+// @version      1.7.5
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -58,9 +58,15 @@ body {
 
 /* ===== POST LAYOUT: convert sidebar user-cell to inline header ===== */
 
+.message--post {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
 .message--post .message-inner {
   display: flex !important;
   flex-direction: column !important;
+  width: 100% !important;
 }
 
 .message--post .message-cell--user {
@@ -291,15 +297,17 @@ body {
   max-width: 100% !important;
   display: flex !important;
   flex-direction: column !important;
-  align-items: center !important;
+  align-items: stretch !important;
 }
 
 /* Tighter page padding */
 .p-body-pageContent {
   padding: 4px 0 !important;
+  width: 100% !important;
 }
 .block-body--messages {
   border-collapse: collapse !important;
+  width: 100% !important;
 }
 
 /* Navigation breadcrumbs — compact */
