@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/skyscrapercity-compact
-// @version      1.5.0
+// @version      1.5.1
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -285,11 +285,11 @@ body {
 }
 .p-body-content {
   flex: 1 !important;
-  max-width: 70% !important;
+  max-width: 92% !important;
   margin: 0 auto !important;
 }
 .p-body-main {
-  max-width: 70% !important;
+  max-width: 92% !important;
   margin: 0 auto !important;
 }
 .p-body-inner {
