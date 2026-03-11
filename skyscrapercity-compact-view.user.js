@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.2
+// @version      1.7.3
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -254,16 +254,14 @@ body {
   max-height: none !important;
   cursor: zoom-out !important;
 }
-.message--post .bbImageWrapper.ssc-wrap,
-.message--post .js-lbImage.ssc-wrap,
-.message--post [data-lb-sidebar-href].ssc-wrap {
+.message--post .ssc-wrap {
   display: inline-block !important;
   max-height: 250px !important;
   overflow: hidden !important;
+  width: auto !important;
+  height: auto !important;
 }
-.message--post .bbImageWrapper.ssc-wrap.ssc-wrap-expanded,
-.message--post .js-lbImage.ssc-wrap.ssc-wrap-expanded,
-.message--post [data-lb-sidebar-href].ssc-wrap.ssc-wrap-expanded {
+.message--post .ssc-wrap-expanded {
   max-height: none !important;
   overflow: visible !important;
 }
@@ -426,10 +424,16 @@ body {
       img.removeAttribute('style');
       img.classList.add('ssc-constrained');
 
-      const wrapper = img.closest('.bbImageWrapper, .js-lbImage, [data-lb-sidebar-href]');
-      if (wrapper && !wrapper.classList.contains('ssc-wrap')) {
-        wrapper.removeAttribute('style');
-        wrapper.classList.add('ssc-wrap');
+      let el = img.parentElement;
+      const body = img.closest('.message-body, .message-content');
+      while (el && el !== body) {
+        if (el.style && el.style.cssText) {
+          el.removeAttribute('style');
+        }
+        if (!el.classList.contains('ssc-wrap')) {
+          el.classList.add('ssc-wrap');
+        }
+        el = el.parentElement;
       }
     }
 
@@ -453,8 +457,14 @@ body {
       e.preventDefault();
       e.stopPropagation();
       img.classList.toggle('ssc-expanded');
-      const wrapper = img.closest('.ssc-wrap');
-      if (wrapper) wrapper.classList.toggle('ssc-wrap-expanded');
+      let el = img.parentElement;
+      const body = img.closest('.message-body, .message-content');
+      while (el && el !== body) {
+        if (el.classList.contains('ssc-wrap')) {
+          el.classList.toggle('ssc-wrap-expanded');
+        }
+        el = el.parentElement;
+      }
     }, true);
   });
 })();
