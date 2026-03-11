@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.6.6
+// @version      1.7.0
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -14,27 +14,6 @@
 
 (function () {
   'use strict';
-
-  const STORAGE_KEY = 'ssc_compact_enabled';
-
-  function isEnabled() {
-    return localStorage.getItem(STORAGE_KEY) !== 'false';
-  }
-
-  function toggle() {
-    const next = !isEnabled();
-    localStorage.setItem(STORAGE_KEY, next);
-    location.reload();
-  }
-
-  if (typeof GM_registerMenuCommand === 'function') {
-    GM_registerMenuCommand(
-      isEnabled() ? 'Disable Compact View' : 'Enable Compact View',
-      toggle
-    );
-  }
-
-  if (!isEnabled()) return;
 
   const css = `
 /* ===== LEGIBLE FONTS ===== */
@@ -52,8 +31,6 @@ body,
   text-rendering: optimizeLegibility !important;
   font-optical-sizing: auto !important;
   font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1 !important;
-  letter-spacing: 0.01em !important;
-  word-spacing: 0.02em !important;
 }
 
 /* Counteract halation: bright-on-dark text looks heavier than it is */
@@ -77,7 +54,6 @@ body {
 .message--post .message-name {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-weight: 600 !important;
-  letter-spacing: 0.02em !important;
 }
 
 /* ===== POST LAYOUT: convert sidebar user-cell to inline header ===== */
@@ -468,28 +444,6 @@ aside.block,
     }
     nukeSidebar();
     new MutationObserver(nukeSidebar).observe(document.body, { childList: true, subtree: true });
-
-    const indicator = document.createElement('div');
-    indicator.textContent = 'Compact';
-    Object.assign(indicator.style, {
-      position: 'fixed',
-      bottom: '8px',
-      right: '8px',
-      background: 'rgba(0,0,0,0.6)',
-      color: '#8f8',
-      padding: '2px 8px',
-      borderRadius: '4px',
-      fontSize: '11px',
-      zIndex: '99999',
-      cursor: 'pointer',
-      opacity: '0.6',
-      transition: 'opacity 0.2s',
-    });
-    indicator.title = 'Click to disable compact view';
-    indicator.addEventListener('click', toggle);
-    indicator.addEventListener('mouseenter', () => { indicator.style.opacity = '1'; });
-    indicator.addEventListener('mouseleave', () => { indicator.style.opacity = '0.6'; });
-    document.body.appendChild(indicator);
 
     function constrainImg(img) {
       if (img.classList.contains('ssc-constrained')) return;
