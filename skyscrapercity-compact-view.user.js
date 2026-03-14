@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SkyscraperCity Compact View
 // @namespace    https://github.com/shock0572/skyscrapercity_greasemonkey_viewer
-// @version      1.7.9
+// @version      1.8.0
 // @description  Ultra-compact post layout for SkyscraperCity (XenForo 2) forums
 // @author       You
 // @match        https://www.skyscrapercity.com/*
@@ -413,16 +413,10 @@ body {
       img.removeAttribute('style');
       img.classList.add('ssc-constrained');
 
-      let el = img.parentElement;
-      const body = img.closest('.message-body, .message-content');
-      while (el && el !== body) {
-        if (el.style && el.style.cssText) {
-          el.removeAttribute('style');
-        }
-        if (!el.classList.contains('ssc-wrap')) {
-          el.classList.add('ssc-wrap');
-        }
-        el = el.parentElement;
+      const wrapper = img.closest('.bbImageWrapper, .js-lbImage');
+      if (wrapper) {
+        wrapper.removeAttribute('style');
+        wrapper.classList.add('ssc-wrap');
       }
     }
 
@@ -446,14 +440,8 @@ body {
       e.preventDefault();
       e.stopPropagation();
       img.classList.toggle('ssc-expanded');
-      let el = img.parentElement;
-      const body = img.closest('.message-body, .message-content');
-      while (el && el !== body) {
-        if (el.classList.contains('ssc-wrap')) {
-          el.classList.toggle('ssc-wrap-expanded');
-        }
-        el = el.parentElement;
-      }
+      const wrapper = img.closest('.ssc-wrap');
+      if (wrapper) wrapper.classList.toggle('ssc-wrap-expanded');
     }, true);
   });
 })();
